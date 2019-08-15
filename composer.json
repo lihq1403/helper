@@ -1,0 +1,17 @@
+{
+    "name": "lihq1403\/helper",
+    "description": "helper",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lihq1403",
+            "email": "lihqing1403@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Lihq1403\\Helper\\": "src"
+        }
+    }
+}
