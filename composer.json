@@ -8,10 +8,15 @@
             "email": "lihqing1403@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "larapack/dd": "^1.1"
+    },
     "autoload": {
         "psr-4": {
             "Lihq1403\\Helper\\": "src"
-        }
+        },
+        "files": [
+            "src/common.php"
+        ]
     }
 }

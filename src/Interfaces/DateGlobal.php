@@ -1,6 +1,6 @@
 <?php
 
-namespace Lihq1403\Interfaces;
+namespace Lihq1403\Helper\Interfaces;
 
 interface DateGlobal {
     /**
