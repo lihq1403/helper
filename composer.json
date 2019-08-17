@@ -9,6 +9,8 @@
         }
     ],
     "require": {
+        "php": ">=7.0.0",
+        "ext-json": "*",
         "larapack/dd": "^1.1"
     },
     "autoload": {
