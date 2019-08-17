@@ -86,4 +86,20 @@ class Check
         json_decode($str);
         return (json_last_error() == JSON_ERROR_NONE);
     }
+
+
+    /**
+     * 判断时间戳是否当天
+     * @param int $timestamp
+     * @return bool
+     */
+    public static function isToday(int $timestamp)
+    {
+        $date = date('Y-m-d', $timestamp);
+        $today = date('Y-m-d');
+        if ($date == $today) {
+            return true;
+        }
+        return false;
+    }
 }
