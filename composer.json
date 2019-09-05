@@ -11,7 +11,9 @@
     "require": {
         "php": ">=7.0.0",
         "ext-json": "*",
-        "larapack/dd": "^1.1"
+        "larapack/dd": "^1.1",
+        "phpunit/phpunit": "^8.3",
+        "mockery/mockery": "^1.2"
     },
     "autoload": {
         "psr-4": {
