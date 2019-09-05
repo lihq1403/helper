@@ -1,11 +1,11 @@
 <h1 align="center"> helper </h1>
 
-<p align="center"> helper.</p>
+> 受人启发，[每个项目都写 helper? 为什么不自己搞一个呢？](https://learnku.com/articles/26982)，所以自己动手写一个，以后又不断的更新就好啦，不错不错
 
 ## Installing
 
 ```shell
-$ composer require lihq1403/helper -vvv
+$ composer require lihq1403/helper
 ```
 
 ## Usage
