@@ -3,6 +3,12 @@
 namespace Lihq1403\Helper\Interfaces;
 
 interface DateGlobal {
+
+    /**
+     * 一秒钟
+     */
+    const SECONDS_IN_A_SECONDS = 1;
+
     /**
      * 一分钟的秒数
      */

@@ -3,6 +3,7 @@
 namespace Lihq1403\Helper\Supports;
 
 use DateTime;
+use Lihq1403\Helper\Interfaces\DateGlobal;
 
 class Time
 {
@@ -67,7 +68,7 @@ class Time
      *
      * @return array
      */
-    public static function month($everyDay = false)
+    public static function month()
     {
         list($y, $m, $t) = explode('-', date('Y-m-t'));
         return [
@@ -169,7 +170,7 @@ class Time
      */
     public static function daysToSecond($day = 1)
     {
-        return $day * 86400;
+        return $day * DateGlobal::SECONDS_IN_A_DAY;
     }
 
     /**
@@ -178,9 +179,9 @@ class Time
      * @param int $week
      * @return int
      */
-    public static function weekToSecond($week = 1)
+    public static function weeksToSecond($week = 1)
     {
-        return self::daysToSecond() * 7 * $week;
+        return DateGlobal::SECONDS_IN_A_WEEK * $week;
     }
 
     /**
@@ -240,7 +241,7 @@ class Time
      * @param string $format
      * @return false|string
      */
-    public function defaultFormat($timestamp, $format = 'Y-m-d H:i:s')
+    public static function defaultFormat($timestamp, $format = 'Y-m-d H:i:s')
     {
         if (empty($timestamp)) {
             return '';
