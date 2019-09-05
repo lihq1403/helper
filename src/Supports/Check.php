@@ -61,15 +61,23 @@ class Check
     /**
      * 验证是否是个日期
      * @param string $value
+     * @param array $formats
      * @return bool
      */
-    public static function isDate(string $value)
+    public static function isDate(string $value, array $formats = ['Y-m-d', 'Y/m/d'])
     {
         if (is_numeric($value)) {
             return false;
         } else {
-            if (strtotime($value)) {
-                return true;
+            $unixTime = strtotime($value);
+            if ($unixTime) {
+                // 验证日期的有效性
+                foreach ($formats as $format) {
+                    if (date($format, $unixTime) == $value) {
+                        return true;
+                    }
+                }
+                return false;
             } else {
                 return false;
             }
