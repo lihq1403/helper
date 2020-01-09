@@ -11,7 +11,9 @@
     "require": {
         "php": ">=7.0.0",
         "ext-json": "*",
-        "larapack/dd": "^1.1"
+        "larapack/dd": "^1.1",
+        "phpoffice/phpspreadsheet": "^1.10",
+        "ext-iconv": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.3",
