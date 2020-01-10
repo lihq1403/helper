@@ -76,6 +76,9 @@ class Excel
             'bold' => $bold,
             'setWidth' => $setWidth
         ];
+        if (empty($savePath)) {
+            unset($options['savePath']);
+        }
 
         return self::export($list, $file_name, $options);
     }
