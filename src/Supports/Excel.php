@@ -81,6 +81,114 @@ class Excel
     }
 
     /**
+     * 读取数据
+     * @param string $file 文件
+     * @param int $start_row 开始行
+     * @param int $end_row 结束行
+     * @param int $sheet 工作表
+     * @param int $columnCnt 列数
+     * @param array $options
+     *                          操作选项
+     *                          array mergeCells 合并单元格数组
+     *                          array formula    公式数组
+     *                          array format     单元格格式数组
+     * @return array|bool
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
+    public static function import(string $file, int $start_row = 1, int $end_row = 0, int $sheet = 0, int $columnCnt = 0, $options = [])
+    {
+        // 转码
+        $file = iconv('utf-8', 'gb2312', $file);
+
+        if (empty($file) || !File::readable($file)) {
+            return false;
+        }
+
+        $objRead = IOFactory::createReader('Xlsx');
+
+        // 仅支持xlsx和xls
+        if (!$objRead->canRead($file)) {
+            $objRead = IOFactory::createReader('Xls');
+
+            if (!$objRead->canRead($file)) {
+                return false;
+            }
+        }
+
+        // 如果不需要获取特殊操作，则只读内容，效率会好
+        empty($options) && $objRead->setReadDataOnly(true);
+
+        // 建立excel对象
+        $obj = $objRead->load($file);
+
+        // 选取sheet
+        $currSheet = $obj->getSheet($sheet);
+
+        // 读取合并行列
+        if (isset($options['mergeCells'])) {
+            $options['mergeCells'] = $currSheet->getMergeCells();
+        }
+
+        if (0 == $columnCnt) {
+            // 获取最大列数
+            $columnH = $currSheet->getHighestColumn();
+
+            // 获取最大列的数字
+            $columnCnt = Coordinate::columnIndexFromString($columnH);
+        }
+
+        // 数据初始化
+        $data = [];
+
+        // 开始行
+        // 结束行,获取总行数
+        $end_row = $end_row > 0 ? $end_row : $currSheet->getHighestRow();
+        for ($_row = $start_row; $_row <= $end_row;$_row++) {
+            $isNull = true;
+
+            for ($_column = 1;$_column <= $columnCnt; $_column++) {
+                $cellName = Coordinate::stringFromColumnIndex($_column);
+                $cellId   = $cellName . $_row;
+                $cell     = $currSheet->getCell($cellId);
+
+                if (isset($options['format'])) {
+                    /* 获取格式 */
+                    $format = $cell->getStyle()->getNumberFormat()->getFormatCode();
+                    /* 记录格式 */
+                    $options['format'][$_row][$cellName] = $format;
+                }
+
+                if (isset($options['formula'])) {
+                    /* 获取公式，公式均为=号开头数据 */
+                    $formula = $currSheet->getCell($cellId)->getValue();
+
+                    if (0 === strpos($formula, '=')) {
+                        $options['formula'][$cellName . $_row] = $formula;
+                    }
+                }
+
+                if (isset($format) && 'm/d/yyyy' == $format) {
+                    /* 日期格式翻转处理 */
+                    $cell->getStyle()->getNumberFormat()->setFormatCode('yyyy/mm/dd');
+                }
+
+                $data[$_row][$cellName] = trim($currSheet->getCell($cellId)->getFormattedValue());
+
+                if (!empty($data[$_row][$cellName])) {
+                    $isNull = false;
+                }
+            }
+
+            /* 判断是否整行数据为空，是的话删除该行数据 */
+            if ($isNull) {
+                unset($data[$_row]);
+            }
+        }
+        return $data;
+    }
+
+    /**
      * 导出excel
      * @param array $data  ['A1' => '名称', 'B1' => '序号']
      * @param string $file_name
